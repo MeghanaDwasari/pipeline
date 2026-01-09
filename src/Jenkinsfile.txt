@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    tools {
+        jdk "JDK21" 
+    }
+    stages {
+        stage("Checkout") {
+            steps {
+                // Replace with your actual GitHub URL
+                git branch: "main", url: "https://github.com/MeghanaDwasari/pipeline.git"
+            }
+        }
+        stage("Build & Test") {
+            steps {
+                bat "build.bat"
+            }
+        }
+        stage("Archive") {
+            steps {
+                archiveArtifacts artifacts: "app.jar", fingerprint: true
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
